@@ -3,7 +3,9 @@
 Comprueba que:
     1) un grupo NO autorizado no recibe respuesta y Nova se SALE (leaveChat);
     2) si agregan a Nova a un grupo no autorizado (my_chat_member) se sale sola;
-    3) en el grupo autorizado, un usuario que NO es admin queda bloqueado (🔒);
+    3) en el grupo autorizado, un usuario que NO es admin queda bloqueado (🔒)
+       SIEMPRE que intente usar el bot; un mensaje que NO es comando se ignora
+       en silencio (sin 🔒 y sin preguntar a Telegram);
     4) un admin del grupo (lo dice getChatMember) SÍ puede usar los comandos;
     5) un ID de TELEGRAM_ADMIN_IDS pasa aunque getChatMember diga 'member';
     6) los botones (callback_query) también se filtran por admin;
@@ -183,6 +185,17 @@ revisar("el comando del no-admin NO se ejecuta (no hay 'Estado de Nova')",
         not any("Estado de Nova" in m for m in mensajes))
 revisar("se preguntó a Telegram con getChatMember",
         any(u.endswith("/getChatMember") for _, u, _ in peticiones))
+
+# --- 3.b) Un mensaje NORMAL (sin comando) NO dispara el aviso 🔒 --------------
+# Solo se avisa cuando alguien intenta USAR el bot; charlar es libre.
+ESTADOS.clear()  # sigue siendo 'member'
+for charla in ("hola", "buenos días", "qué tal todo", "573000000001"):
+    mensajes.clear()
+    mandar(CHAT_OK, charla, RASO)
+    revisar(f"un no-admin escribiendo «{charla}» NO recibe el aviso 🔒",
+            not any("🔒" in m for m in mensajes))
+revisar("charlar tampoco gasta una consulta a Telegram (no hay getChatMember)",
+        not any(u.endswith("/getChatMember") for _, u, _ in peticiones))
 
 # --- 4) Un admin del grupo SÍ puede usar los comandos ------------------------
 ESTADOS[str(ADMIN["id"])] = "administrator"

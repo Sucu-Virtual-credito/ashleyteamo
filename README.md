@@ -115,9 +115,12 @@ y copia su `id` (grupos normales `-5...`, supergrupos/canales `-100...`).
 
 Nova **solo obedece a administradores** y **solo vive en grupos autorizados**:
 
-- **Solo admins.** Si escribes un comando y no eres admin, Nova responde
-  `🔒 <tu nombre>, No puedes usar el bot.` y no ejecuta nada. Lo mismo con
-  los botones: si un no-admin pulsa un botón, Nova contesta `🔒 Solo administradores`.
+- **Solo admins, y solo con comandos.** El 🔒 aparece **únicamente cuando
+  intentas usar el bot**: si escribes un comando y no eres admin, Nova responde
+  `🔒 <tu nombre>, No puedes usar el bot.` y no ejecuta nada. Un mensaje normal
+  (aunque empiece por un número, `hola`, etc.) **se ignora en silencio**, lo
+  escriba quien lo escriba. Con los botones es igual: si un no-admin pulsa un
+  botón, Nova contesta `🔒 Solo administradores`.
 - **Grupos autorizados.** El grupo de `TELEGRAM_GROUP_CHAT_ID` (más los que pongas
   en `TELEGRAM_CHATS_AUTORIZADOS`) son los únicos donde Nova responde. Si alguien
   **agrega a Nova a otro grupo**, se **sale sola** (`leaveChat`).
@@ -393,8 +396,9 @@ Entre un token y el siguiente hay un silencio (`PAUSA_ENTRE_TOKENS`, 4 s por
 | `/historial` | Últimas 5 llamadas registradas, con su estado y quién validó |
 | `/reporte <CallSid>` | Historial detallado de una llamada |
 
-> 🔒 **Solo administradores:** si quien escribe el comando (o pulsa un botón) no es
-> admin, Nova lo ignora con un aviso. Y si el bot está en un grupo que no es el
+> 🔒 **Solo administradores:** si quien escribe un **comando** (o pulsa un botón) no
+> es admin, Nova lo ignora con un aviso. Un mensaje que no sea un comando se
+> ignora **en silencio** (sin 🔒). Y si el bot está en un grupo que no es el
 > autorizado, se **sale sola**. Ver [2.2 Control de acceso](#22-control-de-acceso-solo-administradores).
 
 La lista de números se puede administrar **desde Telegram** sin tocar archivos:
@@ -509,7 +513,7 @@ datos para auditoría, pero no aparecen en el historial del reporte.
 | `prueba_llamadas_independientes.py` | Prueba de que varias llamadas a la vez NO se enredan entre sí (panel, números y estado aislados por CallSid; incluye 5 llamadas simultáneas con hilos, el vigilante de llamadas mudas y el reintento ante el 429 de Telegram) |
 | `prueba_cinco_simultaneas.py` | Prueba de **5 llamadas simultáneas de punta a punta**: 5 paneles propios, lo que teclea cada cliente guardado sin fugas, botones que solo afectan a su llamada, rutas de voz sin delay y sin refrescos periódicos (sin 429) |
 | `prueba_ciclos.py` | Prueba de la **cadena de llamadas** (`/ciclos`): mantiene el grupo (5) sin marcar de más, marca la siguiente al colgar, recorre TODOS los números, `/apagar` detiene sin colgar las vivas |
-| `prueba_solo_admins.py` | Prueba del control de acceso: solo admins pueden usar el bot y solo en grupos autorizados |
+| `prueba_solo_admins.py` | Prueba del control de acceso: solo admins pueden usar el bot (y **solo al escribir un comando**: los mensajes normales se ignoran sin 🔒) y solo en grupos autorizados |
 | `desplegar/arrancar-nova.bat` | **Doble clic:** levanta el túnel (ngrok) y el servidor |
 | `desplegar/parar-nova.bat` | **Doble clic:** detiene servidor y túnel |
 | `desplegar/arranque-automatico.bat` | **Doble clic:** arranca Nova solo al encender el PC (`/quitar` lo deshace) |

@@ -2969,6 +2969,11 @@ def telegram_webhook():
             # Grupo NO autorizado: Nova no responde y ademas se sale.
             _sacar_de_grupo_no_autorizado(chat)
             return jsonify(ok=True)
+        texto = data["message"]["text"].strip()
+        # Un mensaje que NO es un comando se ignora SIEMPRE (lo escriba quien lo
+        # escriba): el aviso 🔒 sale solo al intentar usar el bot, no al charlar.
+        if not texto.startswith("/"):
+            return jsonify(ok=True)
         if not _autorizado(chat_id, autor):
             # Solo administradores: a cualquiera del grupo se le avisa.
             operador = autor.get("username") or autor.get("first_name") or "usuario"
@@ -2976,12 +2981,10 @@ def telegram_webhook():
                 f"🔒 {operador}, No puedes usar el bot."
             )
             return jsonify(ok=True)
-        texto = data["message"]["text"].strip()
-        if texto.startswith("/"):
-            operador = autor.get("username") or autor.get("first_name") or "desconocido"
-            _responder_comando(
-                texto.split()[0].split("@")[0].lower(), texto, operador
-            )
+        operador = autor.get("username") or autor.get("first_name") or "desconocido"
+        _responder_comando(
+            texto.split()[0].split("@")[0].lower(), texto, operador
+        )
         return jsonify(ok=True)
 
     if "callback_query" in data:
