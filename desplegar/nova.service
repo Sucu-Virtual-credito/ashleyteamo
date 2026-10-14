@@ -1,0 +1,42 @@
+# Servicio systemd para correr Nova 24/7 en un VPS.
+#
+# Instalacion (como root):
+#   sudo cp desplegar/nova.service /etc/systemd/system/nova.service
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now nova
+#   sudo systemctl status nova
+#
+# Ver registros en vivo:
+#   journalctl -u nova -f
+#
+# Si tu usuario o la carpeta NO son "nova" y "/opt/nova", edita las
+# lineas User, Group y WorkingDirectory antes de copiar el archivo.
+
+[Unit]
+Description=Nova - bot de llamadas con validacion por Telegram
+Documentation=file:///opt/nova/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nova
+Group=nova
+WorkingDirectory=/opt/nova
+
+# Que los print() salgan en el log al instante (sin buffer).
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+
+ExecStart=/opt/nova/.venv/bin/python /opt/nova/servidor.py
+
+# Se reinicia solo si falla o si el VPS reinicia.
+Restart=always
+RestartSec=5
+
+# Un poco de higiene de seguridad.
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

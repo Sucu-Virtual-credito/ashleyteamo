@@ -1,0 +1,19 @@
+[Unit]
+Description=Tunel ngrok para Nova (dominio fijo)
+Documentation=https://ngrok.com/docs
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=nova
+
+# Ajusta el dominio a tu "dev domain" de ngrok.
+# El flag nuevo es --url; en versiones viejas era --domain.
+ExecStart=/usr/local/bin/ngrok http --url=https://riptide-slingshot-mandarin.ngrok-free.dev 5000 --log stdout
+
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

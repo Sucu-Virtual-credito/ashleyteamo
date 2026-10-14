@@ -1,0 +1,9 @@
+# Lista de teléfonos a los que Nova marca.
+# Un número por línea, con + y clave de país. Ejemplo: +573001234567
+# Se puede editar a mano o desde Telegram con /agregar y /quitar.
+#
+# Copia este archivo a numeros.txt y pon ahí los números reales.
+# numeros.txt NO se sube al repositorio (contiene datos personales).
+
++573001234567
++573011234567

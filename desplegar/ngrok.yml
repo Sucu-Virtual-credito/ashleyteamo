@@ -1,0 +1,19 @@
+# Configuracion de ngrok con dominio FIJO (plan gratuito) — YA LISTA.
+#
+# Tu dev domain es: riptide-slingshot-mandarin.ngrok-free.dev
+# Copia este archivo a la carpeta de config que te diga `ngrok config check`:
+#       Windows (MSIX): C:\Users\<usuario>\AppData\Local\Packages\ngrok.ngrok_1g87z0zv29zzc\LocalCache\Local\ngrok\ngrok.yml
+#       Windows (zip):  C:\Users\<usuario>\AppData\Local\ngrok\ngrok.yml
+#       Linux:          ~/.config/ngrok/ngrok.yml
+# 3) Arranca el tunel sin argumentos:
+#       ngrok start nova
+#
+# Asi la URL publica NO cambia al reiniciar: el webhook de Telegram y las
+# llamadas de Twilio apuntan siempre al mismo sitio.
+
+version: "3"
+tunnels:
+  nova:
+    proto: http
+    addr: 5000
+    domain: riptide-slingshot-mandarin.ngrok-free.dev

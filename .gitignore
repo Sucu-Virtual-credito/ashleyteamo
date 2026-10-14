@@ -1,0 +1,32 @@
+# Credenciales: nunca subas este archivo
+.env
+
+# Base de datos local (historial de llamadas). OJO: los sufijos -shm y -wal son
+# parte del historial real (SQLite escribe ahi antes de volcarlo al .db), asi que
+# si no se ignoran se suben llamadas y telefonos de clientes.
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Sistema
+Thumbs.db
+desktop.ini
+.DS_Store
+.vscode/
+.idea/
+
+# Lista REAL de telefonos de clientes: datos personales, NUNCA al repositorio.
+# La plantilla (con numeros de ejemplo) va en numeros.example.txt.
+numeros.txt
+
+# Archivos locales sueltos (no forman parte del proyecto)
+_lst.txt
